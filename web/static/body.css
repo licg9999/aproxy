@@ -1,0 +1,104 @@
+body > .body{
+    padding: 50px;
+}
+
+body > .body .line{
+    height: 2px;
+    background-color: #555;
+}
+
+
+
+body > .body > .rules,
+body > .body > .remotes{
+    position: relative;
+    padding-bottom: 5em;
+}
+body > .body > .rules h2,
+body > .body > .remotes h2{
+    padding: 10px 0;
+    font-size: 1.8em;
+    margin-bottom: 10px;
+}
+body > .body > .rules > button.add,
+body > .body > .remotes > button.add{
+    position: absolute;
+    right: 0;
+    top: 10px;
+}
+body > .body > .rules > .items,
+body > .body > .remotes > .items{
+    margin-top: 5px;
+    width: 94%;
+    margin-left: 3%;
+}
+body > .body > .rules > .items li,
+body > .body > .remotes > .items li{
+    margin-top: 20px;
+    padding: 10px 20px;
+    border: 2px solid #444;
+    background-color: #3b3b3b;
+    border-radius: 5px;
+}
+body > .body > .rules > .items li > h3{
+    padding: 5px 0;
+}
+body > .body > .rules > .items li > .pair{
+    margin-top: 20px;
+    padding: 0 10px;
+}
+body > .body > .rules > .items li > .pair > div{
+    float: left;
+    margin-right: 80px;
+    margin-bottom: 20px;
+}
+body > .body > .rules > .items li > .pair > footer{
+    display: block;
+    clear: both;
+    text-align: left;
+    padding-bottom: 5px;
+}
+body > .body > .rules > .items li > .pair > footer button{
+    display: inline-block;
+    font-size: 0.8em;
+    margin-left: 0px;
+}
+body > .body > .rules > .items li > .pair label{
+    display: inline-block;
+    width: 7em;
+    font-size: 0.9em;
+    font-weight: bold;
+}
+body > .body > .rules > .items li > .pair input[type=text]{
+    width: 260px;
+}
+
+
+body > .body > .rules > .items li.disabled{
+    color: #787878;
+    background-color: #303030;
+    border-color: #666;
+    cursor: not-allowed;
+}
+body > .body > .rules > .items li.disabled > h3{
+    text-decoration: line-through;
+}
+body > .body > .rules > .items li.disabled > .pair input[type=text]{
+    background-color: #3b3b3b;
+    border-color: #555;
+}
+body > .body > .rules > .items li.disabled > .pair input[type=text]:disabled{
+    background-color: #555;
+    border-color: #666;
+}
+body > .body > .rules > .items li.disabled > .pair button{
+    background-color: #464646;
+}
+
+body > .body > .rules > .items li.tip.empty,
+body > .body > .remotes > .items li.tip.empty{
+    font-size: 1em;
+    padding: 50px;
+    text-align: center;
+}
+

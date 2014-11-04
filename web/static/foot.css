@@ -1,0 +1,12 @@
+body > .foot{
+    padding: 0 2%;
+    font-size: 0.9em;
+}
+body > .foot > .line{
+    height: 2px;
+}
+body > .foot > .body{
+    padding: 20px;
+    font-style: italic;
+    text-align: center;
+}

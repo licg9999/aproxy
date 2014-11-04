@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title> </title>
+    
+    <link rel="stylesheet" href="./static/common.css" />
+    <link rel="stylesheet" href="./static/style.css" />
+    <link rel="stylesheet" href="./static/head.css" />
+    <link rel="stylesheet" href="./static/body.css" />
+    <link rel="stylesheet" href="./static/foot.css" />
+    <link rel="stylesheet" href="./static/overlay.css" />
+    
+    <script src="./import.js"></script>
+    <script>
+        importJS('handlebars');
+        importJS('jquery');
+        importJS('seajs');
+        importJS('structurejs');
+    </script>
+</head>
+<body>
+    <div class="head">
+        <ul>
+            <li>Aproxy</li>
+        </ul>
+        <div class="line"></div>
+    </div>
+    <div class="body">
+        <div class="rules">
+            <h2>Rules</h2>
+            <button class="add">添加规则</button>
+            <div class="line"></div>
+            <ul class="items" data-template-id="template-rule-item">
+                <li class="tip empty">
+                    目前尚没有任何规则，请添加
+                </li>
+            </ul>
+            <ul class="template" id="template-rule-item">
+                <li data-hbs-values="" style="display: none">
+                    <h3>{{name}}</h3>
+                    <div class="line"></div>
+                    <div class="pair">
+                        <div class="from">
+                            <label>匹配URL：</label>
+                            <input type="text" placeholder="例如：/example" value="{{from}}" disabled />
+                        </div>
+                        <div class="to">
+                            <label>目录Path：</label>
+                            <input type="text" placeholder="例如：D:/path 或 /path" value="{{to}}" disabled />
+                        </div>
+                        <footer>
+                            <button data-disable="保存" data-enable="编辑" class="set enable">编辑</button>
+                            <button data-enable="启用" data-disable="禁用" class="dis disable">禁用</button>
+                            <button class="remove important">删除</button>
+                        </footer>
+                    </div>
+                </li>
+            </ul>
+        </div>
+        <div class="remotes">
+            <h2>Remotes</h2>
+            <button class="add">添加信息</button>
+            <div class="line"></div>
+            <ul class="items" data-template-id="template-remote-item">
+                <li class="tip empty">
+                    目前尚未配置自定义远端信息
+                </li>
+            </ul>
+            <ul class="template" id="template-remote-item">
+                <!-- TODO -->
+            </ul>
+        </div>
+    </div>
+    
+    <div class="foot">
+        <div class="line"></div>
+        <div class="body">
+            Authored by Uno Lee
+        </div>
+    </div>
+    
+    <div class="overlay">
+        <ul class="items">
+            <li>
+                <div class="add">
+                    <h2>添加规则</h2>
+                    <ul>
+                        <li>
+                            <label>规则名称：</label>
+                            <input data-name type="text" />
+                            <div class="tip" 
+                                 data-tips='{ "empty": "规则名称不能为空" }'></div>
+                        </li>
+                        <li>
+                            <button class="yes">确定</button>
+                            <button class="no">取消</button>
+                        </li>
+                    </ul>
+                </div>
+            </li>
+        </ul>
+        <div class="stage">
+            <div class="closer">x</div>
+            <div class="wrapper">
+            </div>
+        </div>
+        <div class="mask"></div>
+    </div>
+    
+    <script>
+        importJS('./static/init.js');
+    </script>
+</body>
+</html>

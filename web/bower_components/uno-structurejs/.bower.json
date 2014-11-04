@@ -1,0 +1,35 @@
+{
+  "name": "structurejs",
+  "homepage": "https://github.com/licg9999/structurejs",
+  "authors": [
+    "uno(licg9999@126.com)"
+  ],
+  "description": "A solution to structure js codes in one file.",
+  "moduleType": [
+    "globals"
+  ],
+  "keywords": [
+    "structure",
+    "js"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "node_modules",
+    "src",
+    "tests",
+    "package.json",
+    "Gruntfile.js",
+    ".gitignore"
+  ],
+  "main": "build/structure-min.js",
+  "_release": "354376511f",
+  "_resolution": {
+    "type": "branch",
+    "branch": "master",
+    "commit": "354376511fe70ee4a52b659aaa7589aff56427f5"
+  },
+  "_source": "git://github.com/licg9999/structurejs.git",
+  "_target": "*",
+  "_originalSource": "uno-structurejs",
+  "_direct": true
+}

@@ -1,0 +1,14 @@
+body > .head{
+    text-shadow: 0 0 0.2em #ccc;
+    background-color: #111;
+    font-family: "微软雅黑";
+}
+body > .head > ul > li{
+    float: left;
+    padding: 10px;
+    font-weight: bold;
+    font-size: 1.8em;
+}
+body > .head > ul > li:first-child{
+    padding-left: 40px;
+}

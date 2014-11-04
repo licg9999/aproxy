@@ -1,0 +1,26 @@
+{
+  "name": "structurejs",
+  "version": "1.0.0",
+  "homepage": "https://github.com/licg9999/structurejs",
+  "authors": [
+    "uno(licg9999@126.com)"
+  ],
+  "description": "A solution to structure js codes in one file.",
+  "moduleType": [
+    "globals"
+  ],
+  "keywords": [
+    "structure",
+    "js"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "node_modules",
+    "src",
+    "tests",
+    "package.json",
+    "Gruntfile.js",
+    ".gitignore"
+  ],
+  "main": "build/structure-min.js"
+}

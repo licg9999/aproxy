@@ -1,0 +1,17 @@
+body > .overlay .add h2{
+    padding-top: 10px;
+    padding-bottom: 40px;
+    text-align: center;
+}
+body > .overlay .add ul li{
+    margin-bottom: 40px;
+}
+body > .overlay .add ul li:last-child{
+    text-align: center;
+}
+body > .overlay .add .tip{
+    position: absolute;
+    margin-left: 5em;
+    padding: 0 1em;
+    margin-top: 0.5em;
+}
