@@ -1,0 +1,20 @@
+{
+  "name": "aproxy",
+  "version": "0.0.0",
+  "description": "1.0.0",
+  "main": "index.js",
+  "dependencies": {
+    "express": "~4.10.1"
+  },
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/licg9999/aproxy.git"
+  },
+  "author": "uno",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/licg9999/aproxy/issues"
+  },
+  "homepage": "https://github.com/licg9999/aproxy"
+}

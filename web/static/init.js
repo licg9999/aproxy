@@ -1,20 +1,14 @@
 seajs.config({
     paths: {
-        'local': '/web/static/'
+        'local': '/static'
     },
     
     alias: {
-        'overlay'  : 'local/overlay.js',
-        'page'     : 'local/page.js',
-        'rule-item': 'local/rule-item.js'
+        'overlay'    : 'local/overlay.js',
+        'page'       : 'local/page.js',
+        'rule-item'  : 'local/rule-item.js',
+        'remote-item': 'local/remote-item.js'
     }
 });
 
-seajs.use(['rule-item']);
-//seajs.use(['rule-item'], function(ruleItem){
-//    ruleItem.add({
-//        name: 'a',
-//        from: 'b',
-//        to  : 'c'
-//    });
-//});
+seajs.use(['rule-item', 'remote-item']);

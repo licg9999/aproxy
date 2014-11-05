@@ -19,6 +19,10 @@ define(function(require, exports, module){
 
                 page.process($item);
                 
+                if(values.disabled){
+                    $item.addClass('disabled');
+                }
+                
                 $item.fadeIn({
                     complete: function(){
                         ths.check();
@@ -93,6 +97,28 @@ define(function(require, exports, module){
         },
         
         function(ths, cfg){
+            ths.alias('priorityUp');
+            return function($item){
+                var $prev = $item.prev('li');
+                
+                if($prev.length > 0 && !$prev.hasClass('tip')){
+                    $item.insertBefore($prev);
+                }
+            };
+        },
+        
+        function(ths, cfg){
+            ths.alias('priorityDown');
+            return function($item){
+                var $next = $item.next('li');
+                
+                if($next.length > 0 && !$next.hasClass('tip')){
+                    $item.insertAfter($next);
+                }
+            };
+        },
+        
+        function(ths, cfg){
             cfg.$itemList.delegate(cfg.selectors.triggers.remove, 'click', function(e){
                 var $item = $(e.currentTarget).parents('li');
                 ths.remove($item);
@@ -126,6 +152,15 @@ define(function(require, exports, module){
                 ths.disDisable($item, $dis);
             });
             
+            cfg.$itemList.delegate(cfg.selectors.triggers.priorityUp, 'click', function(e){
+                var $item = $(e.currentTarget).parents('li');
+                ths.priorityUp($item);
+            });
+            
+            cfg.$itemList.delegate(cfg.selectors.triggers.priorityDown, 'click', function(e){
+                var $item = $(e.currentTarget).parents('li');
+                ths.priorityDown($item);
+            });
         }
     ], {
         $itemList: $('body > .body > .rules > .items'),
@@ -136,7 +171,9 @@ define(function(require, exports, module){
                 setEnable : 'button.set.enable',
                 setDisable: 'button.set.disable',
                 disEnable : 'button.dis.enable',
-                disDisable: 'button.dis.disable'
+                disDisable: 'button.dis.disable',
+                priorityUp: 'button.priority.up',
+                priorityDown: 'button.priority.down'
             }
         }
     });

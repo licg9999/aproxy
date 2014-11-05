@@ -40,36 +40,49 @@ body > .body > .remotes > .items li{
     background-color: #3b3b3b;
     border-radius: 5px;
 }
+body > .body > .remotes > .items li{
+    padding-top: 0px;
+}
 body > .body > .rules > .items li > h3{
     padding: 5px 0;
 }
-body > .body > .rules > .items li > .pair{
+body > .body > .rules > .items li > .pair,
+body > .body > .remotes > .items li > .pair{
     margin-top: 20px;
     padding: 0 10px;
 }
-body > .body > .rules > .items li > .pair > div{
+body > .body > .rules > .items li > .pair > div,
+body > .body > .remotes > .items li > .pair > div{
     float: left;
     margin-right: 80px;
     margin-bottom: 20px;
 }
-body > .body > .rules > .items li > .pair > footer{
+body > .body > .rules > .items li > .pair > footer,
+body > .body > .remotes > .items li > .pair > footer{
     display: block;
     clear: both;
     text-align: left;
     padding-bottom: 5px;
 }
-body > .body > .rules > .items li > .pair > footer button{
+body > .body > .rules > .items li > .pair > footer button,
+body > .body > .remotes > .items li > .pair > footer button{
     display: inline-block;
     font-size: 0.8em;
     margin-left: 0px;
 }
-body > .body > .rules > .items li > .pair label{
+body > .body > .rules > .items li > .pair > footer button.priority{
+    float: right;
+    margin-left: 0.6em;
+}
+body > .body > .rules > .items li > .pair label,
+body > .body > .remotes > .items li > .pair label{
     display: inline-block;
     width: 7em;
     font-size: 0.9em;
     font-weight: bold;
 }
-body > .body > .rules > .items li > .pair input[type=text]{
+body > .body > .rules > .items li > .pair input[type=text],
+body > .body > .remotes > .items li > .pair input[type=text]{
     width: 260px;
 }
 

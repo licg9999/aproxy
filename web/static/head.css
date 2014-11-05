@@ -11,4 +11,5 @@ body > .head > ul > li{
 }
 body > .head > ul > li:first-child{
     padding-left: 40px;
+    text-shadow: 0 0 10px;
 }

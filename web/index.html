@@ -53,6 +53,8 @@
                             <button data-disable="保存" data-enable="编辑" class="set enable">编辑</button>
                             <button data-enable="启用" data-disable="禁用" class="dis disable">禁用</button>
                             <button class="remove important">删除</button>
+                            <button class="priority down unimportant">&darr;</button>
+                            <button class="priority up unimportant">&uarr;</button>
                         </footer>
                     </div>
                 </li>
@@ -68,7 +70,22 @@
                 </li>
             </ul>
             <ul class="template" id="template-remote-item">
-                <!-- TODO -->
+                <li data-hbs-values="" style="display: none">
+                    <div class="pair">
+                        <div class="hostname">
+                            <label>主机名：</label>
+                            <input type="text" placeholder="例如：www.example.com" value="{{hostname}}" disabled />
+                        </div>
+                        <div class="ipaddress">
+                            <label>IP地址：</label>
+                            <input type="text" placeholder="例如：10.142.20.100" value="{{ipaddress}}" disabled />
+                        </div>
+                        <footer>
+                            <button data-disable="保存" data-enable="编辑" class="set enable">编辑</button>
+                            <button class="remove important">删除</button>
+                        </footer>
+                    </div>
+                </li>
             </ul>
         </div>
     </div>
