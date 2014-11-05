@@ -12,3 +12,7 @@ seajs.config({
 });
 
 seajs.use(['rule-item', 'remote-item']);
+
+seajs.use('overlay', function(overlay){
+    overlay.confirm('hello world');
+});

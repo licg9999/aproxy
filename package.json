@@ -2,9 +2,12 @@
   "name": "aproxy",
   "version": "0.0.0",
   "description": "1.0.0",
-  "main": "index.js",
+  "main": "app.js",
   "dependencies": {
-    "express": "~4.10.1"
+    "express": "~4.10.1",
+    "flex-combo-plus": "~2.0.1",
+    "merge": "^1.2.0",
+    "promise": "~6.0.1"
   },
   "devDependencies": {},
   "repository": {

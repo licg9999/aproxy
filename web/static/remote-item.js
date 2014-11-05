@@ -1,9 +1,12 @@
 define(function(require, exports, module){
-    var page = require('page');
+    
+    var page    = require('page'),
+        overlay = require('overlay');
     
     // 导出通用方法
     exports = module.exports = structure([
         function(ths, cfg){
+            var adding = false;
             ths.alias('add');
             return function(values, setEnabled){
                 values = values || {};
@@ -25,6 +28,7 @@ define(function(require, exports, module){
                 });
                 
                 if(setEnabled){
+                    adding = true;
                     ths.setEnable($item, $item.find(cfg.selectors.triggers.setEnable));
                 }
             };

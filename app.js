@@ -1,9 +1,14 @@
 (function(express){
     
-    var app = express();
+    var server = express();
     
-    app.use('/', express.static(__dirname + '/web'));
+    server.use('/', express.static(__dirname + '/web'));
     
-    app.listen(8080);
+    server.use(function(req, res, nex){
+        require('./fns' + req.path)(req, res);
+    });
+    
+    server.listen(10000);
+    
     
 }(require('express')));
