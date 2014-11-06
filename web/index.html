@@ -17,6 +17,8 @@
         importJS('jquery');
         importJS('seajs');
         importJS('structurejs');
+        
+        importJS('./static/jquery.shCircleLoader.js');
     </script>
 </head>
 <body>
@@ -133,6 +135,11 @@
                     </footer>
                 </div>
             </li>
+            <li>
+                <div class="progressBar">
+                    <div class="loader"></div>
+                </div>
+            </li>
         </ul>
         <div class="stage">
             <div class="closer">x</div>
@@ -141,7 +148,7 @@
         </div>
         <div class="mask"></div>
     </div>
-    
+    <div id="loader"></div>
     <script>
         importJS('./static/init.js');
     </script>

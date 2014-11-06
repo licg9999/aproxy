@@ -5,14 +5,14 @@ seajs.config({
     
     alias: {
         'overlay'    : 'local/overlay.js',
-        'page'       : 'local/page.js',
+        'template'   : 'local/template.js',
+        'io'         : 'local/io.js',
         'rule-item'  : 'local/rule-item.js',
         'remote-item': 'local/remote-item.js'
     }
 });
 
-seajs.use(['rule-item', 'remote-item']);
-
-seajs.use('overlay', function(overlay){
-    overlay.confirm('hello world');
+seajs.use(['rule-item', 'remote-item'], function(ruleItem, remoteItem){
+//    ruleItem.load();
+    remoteItem.load();
 });

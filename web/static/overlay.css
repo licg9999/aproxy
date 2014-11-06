@@ -15,11 +15,21 @@ body > .overlay .add .tip{
     padding: 0 1em;
     margin-top: 0.5em;
 }
-body > .overlay .alert{
+
+body > .overlay .alert,
+body > .overlay .confirm{
     text-align: center;
     padding: 0.6em 1.4em;
 }
-body > .overlay .alert p{
+body > .overlay .alert p,
+body > .overlay .confirm p{
     padding-bottom: 1em;
     font-size: 1.2em;
+}
+
+body > .overlay .progressBar{
+    padding: 1em 4em;
+}
+body > .overlay .progressBar .loader{
+    width: 100px; height: 100px;
 }

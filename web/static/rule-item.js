@@ -1,6 +1,8 @@
 define(function(require, exports, module){
     
-    var page = require('page');
+    var template = require('template'),
+        overlay  = require('overlay'),
+        io       = require('io');
     
     // 导出通用方法
     exports = module.exports = structure([
@@ -17,7 +19,7 @@ define(function(require, exports, module){
 
                 $item.attr('data-hbs-values', JSON.stringify(values));
 
-                page.process($item);
+                template.process($item);
                 
                 if(values.disabled){
                     $item.addClass('disabled');
@@ -175,10 +177,8 @@ define(function(require, exports, module){
                 priorityUp: 'button.priority.up',
                 priorityDown: 'button.priority.down'
             }
-        }
+        },
     });
-    
-    var overlay = require('overlay');
 
     // 弹出层逻辑
     structure([

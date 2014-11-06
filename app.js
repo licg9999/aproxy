@@ -5,7 +5,11 @@
     server.use('/', express.static(__dirname + '/web'));
     
     server.use(function(req, res, nex){
-        require('./fns' + req.path)(req, res);
+        try{
+            require('./fns' + req.path)(req, res);
+        }catch(e){
+            nex();
+        }
     });
     
     server.listen(10000);

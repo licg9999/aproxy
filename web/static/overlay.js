@@ -1,5 +1,5 @@
 define(function(require, exports, module){
-    var page = require('page');
+    var template = require('template');
     
     module.exports = structure([
         function(ths, cfg){
@@ -44,13 +44,16 @@ define(function(require, exports, module){
         
         function(ths, cfg){
             ths.alias('show');
-            return function(idx, close, after, before){
+            return function(idx, close, after, before, maskCloseOff, closerNone){
                 
                 close = close || ths.closeDefault;
                 
                 cfg.$wrapper.html(cfg.$itemList.children('li').eq(idx).html());
                 
-                cfg.$closer.off().on('click', close);
+                cfg.$closer.off().hide();
+                if(!closerNone){
+                    cfg.$closer.on('click', close).show();
+                }
                 
                 if(before){
                     before();
@@ -58,7 +61,9 @@ define(function(require, exports, module){
                 
                 cfg.$mask.off().fadeIn({
                     complete: function(){
-                        cfg.$mask.on('click', close);
+                        if(!maskCloseOff){
+                            cfg.$mask.on('click', close);
+                        }
                         if(after){
                             after();
                         }
@@ -81,7 +86,7 @@ define(function(require, exports, module){
                 ths.show(1, undefined, undefined, function(){
                     var $div = ths.find(cfg.selectors.alert.toString());
                     $div.attr('data-hbs-values', JSON.stringify({tip: tip}));
-                    page.process($div);
+                    template.process($div);
                 });
             };
         },
@@ -95,16 +100,29 @@ define(function(require, exports, module){
             return function(tip, yes){
                 yes = yes || ths.closeDefault;
                 ths.show(2, undefined, function(){
-                    ths.find(cfg.selectors.confirm.triggers.yes).on('click', function(){
+                    ths.find(cfg.selectors.confirm.triggers.yes).off().on('click', function(){
                         yes();
                     });
                 }, function(){
                     var $div = ths.find(cfg.selectors.confirm.toString());
                     $div.attr('data-hbs-values', JSON.stringify({tip: tip}));
-                    page.process($div);
+                    template.process($div);
                 });
             };
         },
+        
+        function(ths, cfg){
+            ths.alias('progressBar');
+            return function(b){
+                if(b){
+                    ths.show(3, undefined, undefined, function(){
+                        ths.find(cfg.selectors.progressBar.loader).shCircleLoader();
+                    }, true, true);
+                }else{
+                    ths.closeDefault();
+                }
+            };
+        }
     ], {
         $mask       : $('body > .overlay > .mask'),
         $itemList   : $('body > .overlay > .items'),
@@ -127,6 +145,12 @@ define(function(require, exports, module){
                 },
                 toString: function(){
                     return '.confirm';
+                }
+            },
+            progressBar: {
+                loader: '.progressBar .loader',
+                toString: function(){
+                    return '.progressBar';
                 }
             }
         }
