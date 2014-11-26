@@ -1,6 +1,6 @@
 {
   "name": "structurejs",
-  "version": "1.0.0",
+  "version": "1.0.6",
   "homepage": "https://github.com/licg9999/structurejs",
   "authors": [
     "uno(licg9999@126.com)"
@@ -15,12 +15,20 @@
   ],
   "license": "MIT",
   "ignore": [
+    "build/structure.js",
+    "build/structure.node.js",
+    "build/structure.node.min.js",
+    "build/structurejs",
+    "build/structure.spm.js",
+    "build/structure.spm.min.js",
     "node_modules",
     "src",
     "tests",
-    "package.json",
+    ".gitignore",
+    ".npmignore",
+    ".spmignore",
     "Gruntfile.js",
-    ".gitignore"
+    "package.json"
   ],
   "main": "build/structure-min.js"
 }

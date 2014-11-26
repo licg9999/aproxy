@@ -1,7 +1,7 @@
 {
   "name": "aproxy",
-  "version": "0.0.0",
-  "description": "1.0.0",
+  "version": "0.0.1",
+  "description": "building...",
   "main": "app.js",
   "dependencies": {
     "express": "~4.10.1",

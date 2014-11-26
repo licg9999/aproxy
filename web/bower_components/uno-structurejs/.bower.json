@@ -14,19 +14,27 @@
   ],
   "license": "MIT",
   "ignore": [
+    "build/structure.js",
+    "build/structure.node.js",
+    "build/structure.node.min.js",
+    "build/structurejs",
+    "build/structure.spm.js",
+    "build/structure.spm.min.js",
     "node_modules",
     "src",
     "tests",
-    "package.json",
+    ".gitignore",
+    ".npmignore",
+    ".spmignore",
     "Gruntfile.js",
-    ".gitignore"
+    "package.json"
   ],
   "main": "build/structure-min.js",
-  "_release": "354376511f",
+  "_release": "cb1ed4c7e5",
   "_resolution": {
     "type": "branch",
     "branch": "master",
-    "commit": "354376511fe70ee4a52b659aaa7589aff56427f5"
+    "commit": "cb1ed4c7e5b914d9c0cd99f2b9954bc64ae2be85"
   },
   "_source": "git://github.com/licg9999/structurejs.git",
   "_target": "*",
