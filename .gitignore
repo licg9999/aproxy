@@ -1,2 +1,2 @@
-node_modules/
-fed-proxy/
+node_modules/**/*
+fed-proxy/**/*
