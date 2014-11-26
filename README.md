@@ -1,3 +1,3 @@
 #aproxy
 
-> building..., see you next week!
+> Building..., see you next week!
