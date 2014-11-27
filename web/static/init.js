@@ -13,6 +13,6 @@ seajs.config({
 });
 
 seajs.use(['rule-item', 'remote-item'], function(ruleItem, remoteItem){
-//    ruleItem.load();
+    ruleItem.load();
     remoteItem.load();
 });

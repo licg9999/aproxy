@@ -13,6 +13,7 @@ define(function(require, exports, module){
                 overlay.progressBar(true);
                 $.ajax({
                     url    : url,
+                    data   : data,
                     success: function(data){
                         overlay.progressBar(false);
                         success(data);
@@ -20,7 +21,7 @@ define(function(require, exports, module){
                     error  : function(){
                         overlay.alert('网络异常');
                     },
-                    type   : 'POST',
+                    type   : 'GET',
                     cache  : false,
                 });
             }

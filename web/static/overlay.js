@@ -30,25 +30,30 @@ define(function(require, exports, module){
         },
         
         function(ths, cfg){
-            ths.alias('closeDefault');
-
-            return function(e){
-                cfg.$stage.fadeOut({
-                    complete: function(){
-                        cfg.$wrapper.html('');
-                    }
-                });
-                cfg.$mask.fadeOut();
+            var showing = false;
+            ths.alias('isShowing');
+            return function(b){
+                if(arguments.length > 0){
+                    showing = !!b;
+                }else {
+                    return showing;
+                }
             };
         },
         
+        function(ths, cfg){            
+            ths.alias('argumentsQueue');
+            return [];
+        },
+        
         function(ths, cfg){
-            ths.alias('show');
-            return function(idx, close, after, before, maskCloseOff, closerNone){
+            ths.alias('apply2show');
+            function show(index, close, after, before, maskCloseOff, closerNone){
+                ths.isShowing(true);
                 
-                close = close || ths.closeDefault;
+                close = ths.getCloseHandler(close);
                 
-                cfg.$wrapper.html(cfg.$itemList.children('li').eq(idx).html());
+                cfg.$wrapper.html(cfg.$itemList.children('li').eq(index).html());
                 
                 cfg.$closer.off().hide();
                 if(!closerNone){
@@ -64,22 +69,63 @@ define(function(require, exports, module){
                         if(!maskCloseOff){
                             cfg.$mask.on('click', close);
                         }
+                    }
+                });
+                
+                cfg.$stage.fadeIn({
+                    complete: function(){
                         if(after){
                             after();
                         }
                     }
                 });
                 
-                cfg.$stage.fadeIn();
-                
                 ths.centralize();
+            }
+            
+            return function(args){
+                show.apply(this, args);
+            };
+        },
+        
+        function(ths, cfg){
+            ths.alias('getCloseHandler');
+
+            return function(after){
+                return function(){
+                    cfg.$mask.fadeOut();
+                    cfg.$stage.fadeOut({
+                        complete: function(){
+                            var args = ths.argumentsQueue.shift();
+                            ths.isShowing(false);
+                            if(after){
+                                after();
+                            }
+                            cfg.$wrapper.html('');
+                            if(args){
+                                ths.apply2show(args);
+                            }
+                        }
+                    });
+                };
+            };
+        },
+        
+        function(ths, cfg){
+            ths.alias('show');
+            return function(){
+                if(ths.isShowing()){
+                    ths.argumentsQueue.push(arguments);
+                }else{
+                    ths.apply2show(arguments);
+                }
             };
         },
         
         
         function(ths, cfg){
             
-            ths.delegate(cfg.selectors.alert.triggers.yes, 'click', ths.closeDefault);
+            ths.delegate(cfg.selectors.alert.triggers.yes, 'click', ths.getCloseHandler());
             
             ths.alias('alert');
             return function(tip){
@@ -93,12 +139,13 @@ define(function(require, exports, module){
         
         
         function(ths, cfg){
+            var close = ths.getCloseHandler();
             
-            ths.delegate(cfg.selectors.confirm.triggers.no, 'click', ths.closeDefault);
+            ths.delegate(cfg.selectors.confirm.triggers.no, 'click', close);
             
             ths.alias('confirm');
             return function(tip, yes){
-                yes = yes || ths.closeDefault;
+                yes = yes || close;
                 ths.show(2, undefined, function(){
                     ths.find(cfg.selectors.confirm.triggers.yes).off().on('click', function(){
                         yes();
@@ -112,14 +159,23 @@ define(function(require, exports, module){
         },
         
         function(ths, cfg){
+            var close = ths.getCloseHandler(),
+                count = 0;
+            
             ths.alias('progressBar');
-            return function(b){
+            return function(b, cb){
                 if(b){
-                    ths.show(3, undefined, undefined, function(){
-                        ths.find(cfg.selectors.progressBar.loader).shCircleLoader();
-                    }, true, true);
+                    if(count === 0){
+                        ths.show(3, undefined, undefined, function(){
+                            ths.find(cfg.selectors.progressBar.loader).shCircleLoader();
+                        }, true, true);
+                    }
+                    count++;
                 }else{
-                    ths.closeDefault();
+                    count--;
+                    if(count === 0){
+                        close();
+                    }
                 }
             };
         }

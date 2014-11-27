@@ -18,7 +18,7 @@ define(function(require, exports, module){
                 }else{
                     return setting;
                 }
-            }
+            };
         },
         
         function(ths, cfg){
@@ -107,21 +107,32 @@ define(function(require, exports, module){
                     ths.isSetting(false);
                 }
                 
-                $item.fadeOut({
-                    complete: function(){
-                        $item.remove();
+                var $hostname  = $item.find('.hostname input[type=text]');
                 
-                        ths.check();
+                io.json(cfg.urls.remove, {
+                    hostname: $hostname.val()
+                }, function(data){
+                    if(data.success){
+                        $item.fadeOut({
+                            complete: function(){
+                                $item.remove();
+
+                                ths.check();
+                            }
+                        });
+                    }else{
+                        overlay.alert(cfg.tips.removeFail);
                     }
                 });
+                
             };
         },
 
         function(ths, cfg){
             ths.alias('isSetEnabled');
             return function($item){
-                return !$item.find('.hostname input[type=text]').prop('disabled')
-            }
+                return !$item.find('.hostname input[type=text]').prop('disabled');
+            };
         },
         
         function(ths, cfg){
@@ -145,11 +156,27 @@ define(function(require, exports, module){
             return function($item, $set){
                 ths.isSetting(false);
                 
-                $item.find('.hostname input[type=text]').prop('disabled', true).focus();
-                $item.find('.ipaddress input[type=text]').prop('disabled', true);
-                $set.addClass('enable').removeClass('disable').text($set.attr('data-enable'));
+                var $hostname  = $item.find('.hostname input[type=text]'),
+                    $ipaddress = $item.find('.ipaddress input[type=text]');
+                
+                io.json(cfg.urls.set, {
+                    hostname : $hostname.val(),
+                    ipaddress: $ipaddress.val()
+                }, function(data){
+                    if(data.success){
+                        $hostname.prop('disabled', true);
+                        $ipaddress.prop('disabled', true);
+                        $set.addClass('enable').removeClass('disable').text($set.attr('data-enable'));
+                    }else {
+                        overlay.alert(cfg.tips.setFail);
+                    }
+                });
+                
+                
             };
         },
+        
+        
         
         function(ths, cfg){
             cfg.$itemList.delegate(cfg.selectors.triggers.remove, 'click', function(e){
@@ -170,40 +197,34 @@ define(function(require, exports, module){
                 
                 ths.setDisable($item, $set);
             });
+            
+            $(cfg.selectors.triggers.add).on('click', function(e){
+                exports.add({}, true);
+            });
         }
+        
+        
     ], {
         $itemList: $('body > .body > .remotes > .items'),
         
         selectors: {
             triggers: {
+                add: 'body > .body > .remotes > button.add',
                 remove    : 'button.remove',
                 setEnable : 'button.set.enable',
                 setDisable: 'button.set.disable'
             }
         },
         tips: {
-            setting: '请填先写完当前编辑的远端信息',
-            loadFail: '加载失败'
+            setting   : '请先填写完当前编辑的远端信息',
+            loadFail  : '加载失败',
+            setFail   : '写入失败',
+            removeFail: '删除失败'
         },
         urls: {
-            load: '/remote/load'
+            load  : '/remote/load',
+            set   : '/remote/set',
+            remove: '/remote/remove'
         }
-    });
-    
-    
-    // 添加触发逻辑
-    structure([
-        function(ths, cfg){
-            
-            $(cfg.selectors.triggers.add).on('click', function(e){
-                exports.add({}, true);
-            });
-        }
-    ], {
-        selectors: {
-            triggers: {
-                add: 'body > .body > .remotes > button.add'
-            }
-        }
-    });
+    });    
 });

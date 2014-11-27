@@ -7,16 +7,12 @@ module.exports = (function(fs){
             res.json({ success: false });
         }else{
             fs.read().done(function(remotes){
-                if(!remotes[hostname]){
+                remotes[hostname] = ipaddress;
+                fs.write(remotes).done(function(){
+                    res.json({ success: true });
+                }, function(){
                     res.json({ success: false });
-                }else{
-                    remotes[hostname] = ipaddress;
-                    fs.write(remotes).done(function(){
-                        res.json({ success: true });
-                    }, function(){
-                        res.json({ success: false });
-                    });
-                }
+                });
             }, function(){
                 res.json({ success: false });
             });
