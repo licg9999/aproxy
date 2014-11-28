@@ -2,6 +2,7 @@ define(function(require, exports, module){
     
     var template = require('template'),
         overlay  = require('overlay'),
+        validator= require('validator'),
         io       = require('io');
     
     exports = module.exports = structure([
@@ -35,6 +36,11 @@ define(function(require, exports, module){
         function(ths, cfg){
             ths.alias('add');
             return function(values, setEnabled){
+                if(ths.isSetting()){
+                    overlay.alert(cfg.tips.setting);
+                    return;
+                }
+                
                 values = values || {};
                 
                 var $template = $('#' + cfg.$itemList.attr('data-template-id'));
@@ -48,7 +54,7 @@ define(function(require, exports, module){
                 template.process($item);
                 
                 if(values.disabled){
-                    $item.addClass('disabled');
+                    ths.disDisable($item, $item.find(cfg.selectors.triggers.disDisable), true);
                 }
                 
                 $item.fadeIn({
@@ -67,8 +73,25 @@ define(function(require, exports, module){
         function(ths, cfg){
             ths.alias('load');
             return function(){
+                var i, n, r, 
+                    rules;
+                
                 io.json(cfg.urls.load, function(data){
-                    console.log(data);
+                    if(data.success){
+                        rules = data.rules;
+                        for(i = rules.length - 1; i >= 0; i--){
+                            r = rules[i];
+                            ths.add({
+                                index: i,
+                                name : r.name,
+                                from : r.from,
+                                to   : r.to,
+                                disabled: r.disabled
+                            });
+                        }
+                    }else {
+                        overlay.alert(cfg.tips.loadFail);
+                    }
                 });
             };
         },
@@ -90,17 +113,38 @@ define(function(require, exports, module){
         function(ths, cfg){
             ths.alias('remove');
             return function($item){
+                var $index = $item.find('.index');
+                
+                function done(){
+                    $item.fadeOut({
+                        complete: function(){
+                            $item.remove();
+                            ths.check();
+                        }
+                    });
+                }
+                
+                if(ths.isAdding()){
+                    done();
+                }else{
+                    io.json(cfg.urls.remove, {
+                        index: $index.text()
+                    }, function(data){
+                        if(data.success){
+                            done();
+                            $item.nextAll().find('.index').each(function(){
+                                var $self = $(this);
+                                $self.html((+$self.html()) - 1);
+                            });
+                        }else{
+                            overlay.alert(cfg.tips.removeFail);
+                        }
+                    });
+                }
+                
                 if(ths.isSetEnabled($item)){
                     ths.isSetting(false);
                 }
-                
-                $item.fadeOut({
-                    complete: function(){
-                        $item.remove();
-                
-                        ths.check();
-                    }
-                });
             };
         },
 
@@ -128,16 +172,51 @@ define(function(require, exports, module){
         function(ths, cfg){
             ths.alias('setDisable');
             return function($item, $set){
-                ths.isSetting(false);
-                
-                var $from = $item.find('.from input[type=text]'),
+                var $name = $item.find('.name'),
+                    $index= $item.find('.index'),
+                    $from = $item.find('.from input[type=text]'),
                     $to   = $item.find('.to input[type=text]');
                 
-                io.json()
+                // TODO
                 
-                $from.prop('disabled', true);
-                $to.prop('disabled', true);
-                $set.addClass('enable').removeClass('disable').text($set.attr('data-enable'));
+                function done(){
+                    $from.prop('disabled', true);
+                    $to.prop('disabled', true);
+                    $set.addClass('enable').removeClass('disable').text($set.attr('data-enable'));
+                }
+                
+                if(ths.isAdding()){
+                    io.json(cfg.urls.add, {
+                        name: $name.text(),
+                        from: $from.val(),
+                        to  : $to.val()
+                    }, function(data){
+                        if(data.success){
+                            $index.html(data.index);
+                            $item.nextAll().find('.index').each(function(){
+                                var $self = $(this);
+                                $self.html((+$self.html()) + 1);
+                            });
+                            done();
+                        }else{
+                            overlay.alert(cfg.tips.addFail);
+                        }
+                    });
+                }else {
+                    io.json(cfg.urls.set, {
+                        index: $index.text(),
+                        from : $from.val(),
+                        to   : $to.val()
+                    }, function(data){
+                        if(data.success){
+                            done();
+                        }else{
+                            overlay.alert(cfg.tips.setFail);
+                        }
+                    });
+                }
+                
+                ths.isSetting(false);
             };
         },
         
@@ -148,34 +227,51 @@ define(function(require, exports, module){
                     overlay.alert(cfg.tips.setting);
                     return;
                 }
-                $item.removeClass('disabled');
-                $dis.removeClass('enable').addClass('disable').removeClass('unimportant').text($dis.attr('data-disable'));
+                
+                var $index = $item.find('.index');
+                
+                io.json(cfg.urls.set, {
+                    index: $index.text(),
+                    disabled: false
+                }, function(data){
+                    if(data.success){
+                        $item.removeClass('disabled');
+                        $dis.removeClass('enable').addClass('disable').removeClass('unimportant').text($dis.attr('data-disable'));
+                    }else{
+                        overlay.alert(cfg.tips.setFail);
+                    }
+                });
             };
         },
         
         function(ths, cfg){
             ths.alias('disDisable');
-            return function($item, $dis){
+            return function($item, $dis, nowrite){
                 if(ths.isSetting()){
                     overlay.alert(cfg.tips.setting);
                     return;
                 }
-                $item.addClass('disabled');
-                $dis.addClass('enable').removeClass('disable').addClass('unimportant').text($dis.attr('data-enable'));
-            };
-        },
-        
-        function(ths, cfg){
-            ths.alias('priorityUp');
-            return function($item){
-                if(ths.isSetting()){
-                    overlay.alert(cfg.tips.setting);
-                    return;
-                }
-                var $prev = $item.prev('li');
                 
-                if($prev.length > 0 && !$prev.hasClass('tip')){
-                    $item.insertBefore($prev);
+                function done(){
+                    $item.addClass('disabled');
+                    $dis.addClass('enable').removeClass('disable').addClass('unimportant').text($dis.attr('data-enable'));
+                }
+                
+                var $index = $item.find('.index');
+                
+                if(nowrite){
+                    done();
+                }else {
+                    io.json(cfg.urls.set, {
+                        index: $index.text(),
+                        disabled: true
+                    }, function(data){
+                        if(data.success){
+                            done();
+                        }else{
+                            overlay.alert(cfg.tips.setFail);
+                        }
+                    });
                 }
             };
         },
@@ -187,10 +283,51 @@ define(function(require, exports, module){
                     overlay.alert(cfg.tips.setting);
                     return;
                 }
-                var $next = $item.next('li');
+                var $next = $item.next('li'),
+                    temp;
                 
                 if($next.length > 0 && !$next.hasClass('tip')){
-                    $item.insertAfter($next);
+                    
+                    io.json(cfg.urls.priorityDown, {
+                        index: $item.find('.index').text()
+                    }, function(data){
+                        if(data.success){
+                            $item.insertAfter($next);
+                            temp = $next.find('.index').text();
+                            $next.find('.index').html($item.find('.index').text());
+                            $item.find('.index').html(temp);
+                        }else {
+                            overlay.alert(cfg.tips.priorityFail);
+                        }
+                    });
+                }
+            };
+        },
+        
+        function(ths, cfg){
+            ths.alias('priorityUp');
+            return function($item){
+                if(ths.isSetting()){
+                    overlay.alert(cfg.tips.setting);
+                    return;
+                }
+                var $prev = $item.prev('li'),
+                    temp;
+                
+                if($prev.length > 0 && !$prev.hasClass('tip')){
+                    
+                    io.json(cfg.urls.priorityUp, {
+                        index: $item.find('.index').text()
+                    }, function(data){
+                        if(data.success){
+                            $item.insertBefore($prev);
+                            temp = $prev.find('.index').text();
+                            $prev.find('.index').html($item.find('.index').text());
+                            $item.find('.index').html(temp);
+                        }else {
+                            overlay.alert(cfg.tips.priorityFail);
+                        }
+                    });
                 }
             };
         },
@@ -244,14 +381,11 @@ define(function(require, exports, module){
             var close = overlay.getCloseHandler();
             
             overlay.delegate(cfg.selectors.overlay.triggers.yes, 'click', function(e){
-                var $name = overlay.find(cfg.selectors.overlay.inputs.name),
-                    $tip  = $name.next('.tip');
+                var $self = $(e.currentTarget),
+                    $name = overlay.find(cfg.selectors.overlay.inputs.name);
                 
-                if($name.val().length === 0){
-                    $tip.addClass('error');
-                    $tip.html(cfg.tips.name.empty);
-                    $name.select();
-                }else{
+                if(validator.nonEmp($name, cfg.tips.name.nonEmp) && validator.maxLen($name, cfg.tips.name.maxLen, 32)){
+                    $self.prop('disabled', true);
                     close(e);
                     ths.add({
                         name: $name.val()
@@ -303,13 +437,24 @@ define(function(require, exports, module){
             }
         },
         tips: {
-            setting: '请先填写完当前编辑的规则',
+            setting     : '请先填写完当前编辑的规则',
+            loadFail    : '加载失败',
+            addFail     : '添加失败',
+            setFail     : '修改失败',
+            removeFail  : '删除失败',
+            priorityFail: '优先级调整失败',
             name: {
-                empty: '规则名称不能为空'
+                nonEmp: '规则名称不能为空',
+                maxLen: '规则名称不得超过32字'
             }
         },
         urls: {
-            load: '/rule/load'
+            load  : '/rule/load',
+            add   : '/rule/add',
+            set   : '/rule/set',
+            remove: '/rule/remove',
+            priorityDown: '/rule/priorityDown',
+            priorityUp: '/rule/priorityUp'
         }
     });
 });

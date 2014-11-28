@@ -7,6 +7,7 @@ seajs.config({
         'overlay'    : 'local/overlay.js',
         'template'   : 'local/template.js',
         'io'         : 'local/io.js',
+        'validator'  : 'local/validator.js',
         'rule-item'  : 'local/rule-item.js',
         'remote-item': 'local/remote-item.js'
     }

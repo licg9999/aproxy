@@ -1,9 +1,11 @@
-(function(express){
+(function(http, fs, express, instance){
+    
+    http.createServer(function(req, res){ 
+        instance.process(req, res); 
+    }).listen(80);
     
     var server = express();
-    
     server.use('/', express.static(__dirname + '/web'));
-    
     server.use(function(req, res, nex){
         try{
             require('./fns' + req.path)(req, res);
@@ -11,8 +13,6 @@
             nex();
         }
     });
+    server.listen(9999);
     
-    server.listen(9000);
-    
-    
-}(require('express')));
+}(require('http'), require('fs'), require('express'), require('./instance')));

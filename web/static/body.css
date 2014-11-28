@@ -46,6 +46,14 @@ body > .body > .remotes > .items li{
 body > .body > .rules > .items li > h3{
     padding: 5px 0;
 }
+body > .body > .rules > .items li > h3 > .index{
+    float: right;
+    text-align: right;
+    padding-right: 10px;
+    color: #666;
+    font-size: 0.8em;
+    line-height: 2em;
+}
 body > .body > .rules > .items li > .pair,
 body > .body > .remotes > .items li > .pair{
     margin-top: 20px;
@@ -56,6 +64,10 @@ body > .body > .remotes > .items li > .pair > div{
     float: left;
     margin-right: 80px;
     margin-bottom: 20px;
+}
+body > .body > .rules > .items li > .pair .tip,
+body > .body > .remotes > .items li > .pair .tip{
+    padding-left: 110px;
 }
 body > .body > .rules > .items li > .pair > footer,
 body > .body > .remotes > .items li > .pair > footer{

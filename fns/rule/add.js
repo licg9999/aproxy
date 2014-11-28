@@ -4,20 +4,21 @@ module.exports = (function(fs){
             name: req.param('name', ''),
             from: req.param('from', ''),
             to  : req.param('to', ''),
-            disabled: !!req.param('disabled', false)
+            disabled: req.param('disabled', false)
         };
+        rule.disabled = (typeof rule.disabled === 'string')? (rule.disabled === 'true'): !!rule.disabled;
         
         if(!rule.name){
             res.json({ success: false });
             
         }else{
             fs.read().done(function(rules){
-
-                rules.push(rule);
-
+                
+                rules.unshift(rule);
+                
                 fs.write(rules).done(function(){
 
-                    res.json({ success: true });
+                    res.json({ success: true, index: 0 });
 
                 }, function(){
 

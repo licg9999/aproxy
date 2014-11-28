@@ -34,22 +34,25 @@
             <button class="add">添加规则</button>
             <div class="line"></div>
             <ul class="items" data-template-id="template-rule-item">
-                <li class="tip empty">
-                    目前尚没有任何规则，请添加
-                </li>
+                <li class="tip empty">目前尚没有任何规则，请添加</li>
             </ul>
             <ul class="template" id="template-rule-item">
                 <li data-hbs-values="" style="display: none">
-                    <h3>{{name}}</h3>
+                    <h3>
+                        <span class="name">{{name}}</span>
+                        <span class="index">{{index}}</span>
+                    </h3>
                     <div class="line"></div>
                     <div class="pair">
                         <div class="from">
                             <label>匹配URL：</label>
-                            <input type="text" placeholder="例如：/example" value="{{from}}" disabled />
+                            <input type="text" placeholder="例如：/example/" value="{{from}}" disabled />
+                            <div class="tip"></div>
                         </div>
                         <div class="to">
                             <label>目录Path：</label>
-                            <input type="text" placeholder="例如：D:/path 或 /path" value="{{to}}" disabled />
+                            <input type="text" placeholder="例如：D:/path/ 或 /path/" value="{{to}}" disabled />
+                            <div class="tip"></div>
                         </div>
                         <footer>
                             <button data-disable="保存" data-enable="编辑" class="set enable">编辑</button>
@@ -77,10 +80,12 @@
                         <div class="hostname">
                             <label>主机名：</label>
                             <input type="text" placeholder="例如：www.example.com" value="{{hostname}}" disabled />
+                            <div class="tip"></div>
                         </div>
                         <div class="ipaddress">
                             <label>IP地址：</label>
                             <input type="text" placeholder="例如：10.142.20.100" value="{{ipaddress}}" disabled />
+                            <div class="tip"></div>
                         </div>
                         <footer>
                             <button data-disable="保存" data-enable="编辑" class="set enable">编辑</button>

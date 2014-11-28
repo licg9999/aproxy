@@ -2,6 +2,7 @@ define(function(require, exports, module){
     
     var template = require('template'),
         overlay  = require('overlay'),
+        validator= require('validator'),
         io       = require('io');
     
     // 导出通用方法
@@ -103,35 +104,42 @@ define(function(require, exports, module){
         function(ths, cfg){
             ths.alias('remove');
             return function($item){
+                var $hostname  = $item.find('.hostname input[type=text]');
+                
+                function done(){
+                    $item.fadeOut({
+                        complete: function(){
+                            $item.remove();
+
+                            ths.check();
+                        }
+                    });
+                }
+                
+                if(ths.isAdding()){
+                    done();
+                }else{
+                    io.json(cfg.urls.remove, {
+                        hostname: $hostname.val()
+                    }, function(data){
+                        if(data.success){
+                            done();
+                        }else{
+                            overlay.alert(cfg.tips.removeFail);
+                        }
+                    });
+                }
+                
                 if(ths.isSetEnabled($item)){
                     ths.isSetting(false);
                 }
-                
-                var $hostname  = $item.find('.hostname input[type=text]');
-                
-                io.json(cfg.urls.remove, {
-                    hostname: $hostname.val()
-                }, function(data){
-                    if(data.success){
-                        $item.fadeOut({
-                            complete: function(){
-                                $item.remove();
-
-                                ths.check();
-                            }
-                        });
-                    }else{
-                        overlay.alert(cfg.tips.removeFail);
-                    }
-                });
-                
             };
         },
 
         function(ths, cfg){
             ths.alias('isSetEnabled');
             return function($item){
-                return !$item.find('.hostname input[type=text]').prop('disabled');
+                return !$item.find('.ipaddress input[type=text]').prop('disabled');
             };
         },
         
@@ -144,9 +152,12 @@ define(function(require, exports, module){
                 }
                 
                 ths.isSetting(true);
-                
-                $item.find('.hostname input[type=text]').prop('disabled', false).focus();
-                $item.find('.ipaddress input[type=text]').prop('disabled', false);
+                if(ths.isAdding()){
+                    $item.find('.hostname input[type=text]').prop('disabled', false).focus();
+                    $item.find('.ipaddress input[type=text]').prop('disabled', false);
+                }else{
+                    $item.find('.ipaddress input[type=text]').prop('disabled', false).focus();
+                }
                 $set.removeClass('enable').addClass('disable').text($set.attr('data-disable'));
             };
         },
@@ -154,11 +165,24 @@ define(function(require, exports, module){
         function(ths, cfg){
             ths.alias('setDisable');
             return function($item, $set){
-                ths.isSetting(false);
-                
                 var $hostname  = $item.find('.hostname input[type=text]'),
                     $ipaddress = $item.find('.ipaddress input[type=text]');
                 
+                if(!validator.and([
+                    validator.nonEmp($hostname, cfg.tips.hostname.nonEmp) && 
+                    validator.maxLen($hostname, cfg.tips.hostname.maxLen, 128),
+                    
+                    validator.nonEmp($ipaddress, cfg.tips.ipaddress.nonEmp) &&
+                    validator.maxLen($ipaddress, cfg.tips.ipaddress.maxLen, 15) &&
+                    validator.format($ipaddress, cfg.tips.ipaddress.format, /(\d{1,3}\.){3}\d{1,3}/) &&
+                    validator.is($ipaddress, cfg.tips.ipaddress.nlocal, function(val){
+                        return val !== '127.0.0.1';
+                    })
+                ])){
+                    return false;
+                }                
+                
+                ths.isSetting(false);
                 io.json(cfg.urls.set, {
                     hostname : $hostname.val(),
                     ipaddress: $ipaddress.val()
@@ -171,8 +195,6 @@ define(function(require, exports, module){
                         overlay.alert(cfg.tips.setFail);
                     }
                 });
-                
-                
             };
         },
         
@@ -219,7 +241,17 @@ define(function(require, exports, module){
             setting   : '请先填写完当前编辑的远端信息',
             loadFail  : '加载失败',
             setFail   : '写入失败',
-            removeFail: '删除失败'
+            removeFail: '删除失败',
+            hostname  : {
+                nonEmp: '主机名不得为空',
+                maxLen: '主机名不得超过128字'
+            },
+            ipaddress : {
+                nonEmp: 'IP地址不得为空',
+                maxLen: 'IP地址不得超过15字',
+                format: 'IP地址格式错误',
+                nlocal: 'IP地址不得为127.0.0.1'
+            }
         },
         urls: {
             load  : '/remote/load',

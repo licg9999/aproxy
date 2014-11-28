@@ -1,4 +1,4 @@
-module.exports = (function(fs, Promise){
+module.exports = (function(fs, Promise, instance){
     return {
         readJSONFile: function(filename){
             
@@ -25,10 +25,11 @@ module.exports = (function(fs, Promise){
                     if(err){
                         reject(err);
                     }else {
+                        instance.update();
                         resolve();
                     }
                 });
             });
         }
     };
-}(require('fs'), require('promise')));
+}(require('fs'), require('promise'), require('./instance')));
