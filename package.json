@@ -1,17 +1,17 @@
 {
   "name": "aproxy",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "A proxy for static resources",
   "main": "./app.js",
   "bin": {
     "aproxy": "./bin/aproxy"
   },
   "dependencies": {
-    "colors": "1.0.3",
-    "express": "4.10.1",
+    "colors": "~1.0.3",
+    "express": "~4.10.1",
     "flex-combo-plus": "2.0.4",
-    "merge": "1.2.0",
-    "promise": "6.0.1"
+    "merge": "~1.2.0",
+    "promise": "~6.0.1"
   },
   "devDependencies": {},
   "repository": {

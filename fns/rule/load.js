@@ -9,4 +9,4 @@ module.exports = (function(fs){
             res.json({ success: false });
         });
     };
-}(require('./fs')));
+}(require('./fs.js')));

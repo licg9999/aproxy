@@ -32,4 +32,4 @@ module.exports = (function(fs, Promise, instance){
             });
         }
     };
-}(require('fs'), require('promise'), require('./instance')));
+}(require('fs'), require('promise'), require('./instance.js')));

@@ -11,11 +11,11 @@
     server.use('/', express.static(__dirname + '/web'));
     server.use(function(req, res, nex){
         try{
-            require('./fns' + req.path)(req, res);
+            require('./fns' + req.path + '.js')(req, res);
         }catch(e){
             nex();
         }
     });
     server.listen(portC);
     
-}(require('http'), require('fs'), require('express'), require('./instance')));
+}(require('http'), require('fs'), require('express'), require('./instance.js')));

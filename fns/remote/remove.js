@@ -19,4 +19,4 @@ module.exports = (function(fs){
             });
         }
     };
-}(require('./fs')));
+}(require('./fs.js')));

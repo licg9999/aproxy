@@ -33,4 +33,4 @@ module.exports = (function(merge, fs){
             });
         }
     };
-}(require('merge'), require('./fs')));
+}(require('merge'), require('./fs.js')));
