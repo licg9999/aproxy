@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+
 (function(package, chpr, path, colors){
     
     process.title = package.name;
@@ -19,8 +20,8 @@
     
     chpr.fork(path.resolve(cwd, package.main), [pp, pc], { cwd: cwd });
     
-    console.log('Proxy port: 80'.grey);
-    console.log('Configuration port: 9999'.gray);
+    console.log(('Proxy port: ' + (pp || 80)).grey);
+    console.log(('Configuration port: ' + (pc || 9999)).gray);
     console.log('Stop by ^C'.green);
     
 }(require('../package.json'), require('child_process'), require('path'), require('colors')));
