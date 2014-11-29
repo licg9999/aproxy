@@ -8,8 +8,20 @@ body > .head > ul > li{
     padding: 10px;
     font-weight: bold;
     font-size: 1.8em;
+    height: 1.5em;
+    position: relative;
 }
 body > .head > ul > li:first-child{
     padding-left: 40px;
-    text-shadow: 0 0 10px;
+}
+body > .head > ul > li:first-child > span{
+    position: absolute;
+    z-index: 100;
+}
+body > .head > ul > li:first-child > img{
+    position: absolute;
+    z-index: 90;
+    opacity: 0.4;
+    margin-left: -0.8em;
+    margin-top: 0.3em;
 }

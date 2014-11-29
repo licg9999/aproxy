@@ -1,0 +1,28 @@
+#!/usr/bin/env node
+(function(package, chpr, path, colors){
+    
+    process.title = package.name;
+    
+    var pp = 0, pc = 0;
+    process.argv.forEach(function(arg, idx){
+        switch(arg){
+            case '-p':
+                pp = +process.argv[idx + 1]
+                break;
+            case '-c':
+                pc = +process.argv[idx + 1]
+                break;
+        }
+    });
+    
+    var cwd = path.resolve(__dirname, '..');
+    
+    chpr.fork(path.resolve(cwd, package.main), [pp, pc], { cwd: cwd });
+    
+    console.log('Proxy port: 80'.grey);
+    console.log('Configuration port: 9999'.gray);
+    console.log('Stop by ^C'.green);
+    
+}(require('../package.json'), require('child_process'), require('path'), require('colors')));
+
+

@@ -67,6 +67,7 @@ body > .body > .remotes > .items li > .pair > div{
 }
 body > .body > .rules > .items li > .pair .tip,
 body > .body > .remotes > .items li > .pair .tip{
+    padding-top: 4px;
     padding-left: 110px;
 }
 body > .body > .rules > .items li > .pair > footer,

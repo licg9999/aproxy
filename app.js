@@ -1,8 +1,11 @@
 (function(http, fs, express, instance){
     
+    var portP = process.argv[2] || 80,
+        portC = process.argv[3] || 9999;
+    
     http.createServer(function(req, res){ 
         instance.process(req, res); 
-    }).listen(80);
+    }).listen(portP);
     
     var server = express();
     server.use('/', express.static(__dirname + '/web'));
@@ -13,6 +16,6 @@
             nex();
         }
     });
-    server.listen(9999);
+    server.listen(portC);
     
 }(require('http'), require('fs'), require('express'), require('./instance')));

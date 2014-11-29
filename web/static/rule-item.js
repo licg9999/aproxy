@@ -172,12 +172,34 @@ define(function(require, exports, module){
         function(ths, cfg){
             ths.alias('setDisable');
             return function($item, $set){
-                var $name = $item.find('.name'),
-                    $index= $item.find('.index'),
+                var $index= $item.find('.index'),
+                    $name = $item.find('.name'),
                     $from = $item.find('.from input[type=text]'),
                     $to   = $item.find('.to input[type=text]');
                 
-                // TODO
+                if(!validator.and([
+                    validator.nonEmp($from, cfg.tips.from.nonEmp) &&
+                    validator.maxLen($from, cfg.tips.from.maxLen, 512),
+                    validator.nonEmp($to, cfg.tips.to.nonEmp) && 
+                    validator.maxLen($to, cfg.tips.to.maxLen, 512)
+                ])){
+                    return false;
+                }
+                
+                if(!validator.format($from, '', /^\/.*/)){
+                    $from.val('/' + $from.val());
+                }
+                if(!validator.format($from, '', /.*\/$/)){
+                    $from.val($from.val() + '/');
+                }
+                
+                $to.val($to.val().replace(/\\/g, '/'));
+                if(!validator.format($to, '', /^(\w:)?\/.*/)){
+                    $to.val('/' + $to.val());
+                }
+                if(!validator.format($to, '', /.*\/$/)){
+                    $to.val($to.val() + '/');
+                }
                 
                 function done(){
                     $from.prop('disabled', true);
@@ -444,8 +466,16 @@ define(function(require, exports, module){
             removeFail  : '删除失败',
             priorityFail: '优先级调整失败',
             name: {
-                nonEmp: '规则名称不能为空',
+                nonEmp: '规则名称不得为空',
                 maxLen: '规则名称不得超过32字'
+            },
+            from: {
+                nonEmp: '匹配URL不得为空',
+                maxLen: '匹配URL不得超过512字'
+            },
+            to: {
+                nonEmp: '目录Path不得为空',
+                maxLen: '目录Path不得超过512字'
             }
         },
         urls: {

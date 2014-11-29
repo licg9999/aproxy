@@ -9,7 +9,7 @@ define(function(require, exports, module){
     module.exports = {
         is: function($inp, tip, test){
             test = test.call($inp, $inp.val());
-            if(!test){
+            if(!test && tip){
                 done($inp, tip);
             }
             return test;
