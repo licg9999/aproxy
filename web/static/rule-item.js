@@ -181,23 +181,20 @@ define(function(require, exports, module){
                     validator.nonEmp($from, cfg.tips.from.nonEmp) &&
                     validator.maxLen($from, cfg.tips.from.maxLen, 512),
                     validator.nonEmp($to, cfg.tips.to.nonEmp) && 
-                    validator.maxLen($to, cfg.tips.to.maxLen, 512)
+                    validator.maxLen($to, cfg.tips.to.maxLen, 512) &&
+                    validator.format($to.val($to.val().replace(/\\/g, '/')), cfg.tips.to.format, /^(\w:)?\//)
                 ])){
                     return false;
                 }
                 
-                if(!validator.format($from, '', /^\/.*/)){
+                if(!validator.format($from, '', /^\//)){
                     $from.val('/' + $from.val());
                 }
-                if(!validator.format($from, '', /.*\/$/)){
+                if(!validator.format($from, '', /\/$/)){
                     $from.val($from.val() + '/');
                 }
                 
-                $to.val($to.val().replace(/\\/g, '/'));
-                if(!validator.format($to, '', /^(\w:)?\/.*/)){
-                    $to.val('/' + $to.val());
-                }
-                if(!validator.format($to, '', /.*\/$/)){
+                if(!validator.format($to, '', /\/$/)){
                     $to.val($to.val() + '/');
                 }
                 
@@ -475,7 +472,8 @@ define(function(require, exports, module){
             },
             to: {
                 nonEmp: '目录Path不得为空',
-                maxLen: '目录Path不得超过512字'
+                maxLen: '目录Path不得超过512字',
+                format: '目录Path应是绝对路径'
             }
         },
         urls: {
