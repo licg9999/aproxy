@@ -1,10 +1,10 @@
 {
   "name": "aproxy",
-  "version": "1.0.6",
+  "version": "1.0.8",
   "description": "A proxy for static resources",
-  "main": "./app.js",
+  "main": "app.js",
   "bin": {
-    "aproxy": "./bin/aproxy"
+    "aproxy": "bin/aproxy"
   },
   "dependencies": {
     "colors": "~1.0.3",
