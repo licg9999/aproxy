@@ -1,17 +1,16 @@
 #!/usr/bin/env node 
 
 (function(package, chpr, path, colors){
-    
     process.title = package.name;
     
     var pp = 0, pc = 0;
     process.argv.forEach(function(arg, idx){
         switch(arg){
             case '-p':
-                pp = +process.argv[idx + 1]
+                pp = +process.argv[idx + 1];
                 break;
             case '-c':
-                pc = +process.argv[idx + 1]
+                pc = +process.argv[idx + 1];
                 break;
         }
     });
