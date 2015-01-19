@@ -10,6 +10,7 @@ module.exports = (function(fs, instance){
     }
     
     function update(){
+        // TODO
         var rules   = readJSONFileSync('./data/rules.json'),
             remotes = readJSONFileSync('./data/remotes.json');
         

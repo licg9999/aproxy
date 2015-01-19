@@ -1,5 +1,5 @@
 module.exports = (function(Promise, fs){
-    var FILENAME = './data/remotes.json';
+    var FILENAME = 'data/remotes.json';
     
     return {
         read: function(){

@@ -1,17 +1,139 @@
 module.exports = (function(fs, Promise, instance){
-    return {
-        readJSONFile: function(filename){
-            
+
+    var USER_FOLDERNAME;
+    if (process.platform === 'win32') {
+        USER_FOLDERNAME = process.env.USERPROFILE || process.env.APPDATA || process.env.TMP || process.env.TEMP;
+    } else {
+        USER_FOLDERNAME = process.env.HOME || process.env.TMPDIR || '/tmp';
+    }
+    USER_FOLDERNAME = USER_FOLDERNAME.replace(/\\/g, '/') + '/';
+
+    var PROJECT_FOLDERNAME = './';
+
+    function formatpath(path){
+        path = path.replace(/\\/g, '/');
+        if(path.indexOf('/') === 0){
+            path = path.substring(1, path.length);
+        }
+        return path;
+    }
+
+
+    var inner = {
+        mk: function(path){
+            path = formatpath(path);
+
+            var queue = path.split('/'), 
+                filename = queue.pop(),
+                created = false;
+
+            path = USER_FOLDERNAME;
             return new Promise(function(resolve, reject){
-                
-                fs.readFile(filename, function(err, buf){
-                    
-                    if(err){
-                        reject(err);
-                    }else{
-                        resolve(JSON.parse(buf.toString()));
+                function foo(){
+                    if(queue.length === 0){
+                        if(filename){
+                            path += filename;
+                            fs.exists(path, function(exists){
+                                if(!exists){
+                                    created = true;
+                                }
+
+                                fs.appendFile(path, '', function(err){
+                                    if(!err){
+                                        resolve(created);
+                                    }else {
+                                        reject(err);
+                                    }
+                                });
+                            });
+                        }else {
+                            path = path.substring(0, path.length - 1);
+                            fs.appendFile(path, '', function(err){
+                                if(err){
+                                    resolve(created);
+                                }else {
+                                    reject(err);
+                                }
+                            });
+                        }
+                        return;
+                    }
+
+                    path += queue.shift() + '/';
+                    fs.mkdir(path, function(err){
+                        if(!err){
+                            created = true;
+                            foo();
+                        }else if(err.errno === 47){
+                            foo();
+                        }else {
+                            reject(err);
+                        }
+                    });
+                }
+
+                foo();
+            });
+        },
+
+        tc: function(filename){
+            var _self = this;
+
+            var source = PROJECT_FOLDERNAME + formatpath(filename),
+                target = '.aproxy/' + formatpath(filename);
+
+            return new Promise(function(resolve, reject){
+                function copy(){
+                    fs.readFile(source, function(err, buf){
+                        if(!err){
+                            fs.writeFile(USER_FOLDERNAME + target, buf, function(err){
+                                if(!err){
+                                    resolve(USER_FOLDERNAME + target);
+                                }else {
+                                    reject(err);
+                                }
+                            });
+                        }else {
+                            reject(err);
+                        }
+                    });
+                }
+
+                _self.mk(target).then(function(created){
+                    if(created){
+                        copy();
+                    }else {
+                        fs.readFile(USER_FOLDERNAME + target, function(err, buf){
+                            if(!buf.toString().replace(/(^\s+|\s+$)/g, '')){
+                                copy();
+                            }else {
+                                resolve(USER_FOLDERNAME + target);
+                            }
+                        });
                     }
                 });
+            });
+        }
+    };
+
+
+    return {
+        readJSONFile: function(filename){
+
+            return new Promise(function(resolve, reject){
+
+                inner.tc(filename).done(function(fn){
+
+                    fs.readFile(fn, function(err, buf){
+                        
+                        if(!err){
+                            resolve(JSON.parse(buf.toString()));
+                        }else{
+                            reject(err);
+                        }
+                    });
+
+                }, reject);
             });
         },
         
@@ -20,15 +142,19 @@ module.exports = (function(fs, Promise, instance){
             
             return new Promise(function(resolve, reject){
                 
-                fs.writeFile(filename, JSON.stringify(object), function(err){
-                    
-                    if(err){
-                        reject(err);
-                    }else {
-                        instance.update();
-                        resolve();
-                    }
-                });
+                inner.tc(filename).done(function(fn){
+
+                    fs.writeFile(fn, JSON.stringify(object), function(err){
+                        
+                        if(!err){
+                            instance.update();
+                            resolve();
+                        }else {
+                            reject(err);
+                        }
+                    });
+
+                }, reject);
             });
         }
     };
