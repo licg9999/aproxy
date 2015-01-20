@@ -4,10 +4,9 @@ module.exports = (function(Promise, instance, FOLDERNAMES, ds){
     
     function update(){
         return new Promise(function(resolve, reject){
-            Promise.all(ds.readJSONFile('data/rules.json'), ds.readJSONFile('data/remotes.json')).done(function(data){
+            Promise.all([ds.readJSONFile('data/rules.json'), ds.readJSONFile('data/remotes.json')]).done(function(data){
 
-                var rules = data[0],
-                    remotes = data[1];
+                var rules = data[0], remotes = data[1];
 
                 var k, v;
                 try{
