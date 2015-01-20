@@ -57,7 +57,7 @@ module.exports = (function(fs, Promise, FOLDERNAMES){
                         if(!err){
                             created = true;
                             foo();
-                        }else if(err.errno === 47){
+                        }else if(err.code === 'EEXIST'){
                             foo();
                         }else {
                             reject(err);
