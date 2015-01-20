@@ -1,39 +1,50 @@
-module.exports = (function(fs, instance){
+module.exports = (function(Promise, instance, FOLDERNAMES, ds){
+
     var current;
     
-    function readJSONFileSync(filename){
-        return JSON.parse(fs.readFileSync(filename).toString());
-    }
-    
-    function writeJSONFileSync(filename, object){
-        fs.writeFileSync(filename, JSON.stringify(object));
-    }
-    
     function update(){
-        // TODO
-        var rules   = readJSONFileSync('./data/rules.json'),
-            remotes = readJSONFileSync('./data/remotes.json');
-        
-        var k, v;
-        try{
-            current = instance(rules, { request: { remote: remotes } });
-        }catch(e){
-            for(k in remotes){
-                v = remotes[k];
-                if(v === '127.0.0.1'){
-                    delete remotes[k];
+        return new Promise(function(resolve, reject){
+            Promise.all(ds.readJSONFile('data/rules.json'), ds.readJSONFile('data/remotes.json')).done(function(data){
+
+                var rules = data[0],
+                    remotes = data[1];
+
+                var k, v;
+                try{
+                    current = instance(rules, { request: { remote: remotes } });
+                    resolve();
+                }catch(e){
+                    for(k in remotes){
+                        v = remotes[k];
+                        if(v === '127.0.0.1'){
+                            delete remotes[k];
+                        }
+                    }
+                    ds.writeJSONFile('data/remotes.json', remotes).done(reject, reject);
                 }
-            }
-            writeJSONFileSync('./data/remotes.json', remotes);
-            throw e;
-        }
+            }, reject);
+        });
     }
-    update();
     
+    var queue = [];
+
     return {
         process: function(req, res){
-            current(req, res);
+            if(current){
+                current(req, res);
+            }else {
+                if(queue.length === 0){
+                    update().done(function(){
+                        var args;
+                        while(args = queue.shift()){
+                            current(args[0], args[1]);
+                        }
+                    });
+                }
+                queue.push([req, res]);
+            }
         },
         update: update
     };
-}(require('fs'), require('flex-combo-plus')));
+
+}(require('promise'), require('flex-combo-plus'), require('./consts/foldernames'), require('./ds')));

@@ -1,4 +1,4 @@
-(function(http, fs, express, instance){
+(function(http, express, instance){
     
     var portP = +process.argv[2] || 80,
         portC = +process.argv[3] || 9999;
@@ -18,4 +18,4 @@
     });
     server.listen(portC);
     
-}(require('http'), require('fs'), require('express'), require('./instance.js')));
+}(require('http'), require('express'), require('./instance.js')));
