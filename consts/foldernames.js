@@ -9,7 +9,7 @@ module.exports = (function(){
 
     var DATA_FOLDERNAME = '.aproxy/';
 
-    var PROJECT_FOLDERNAME = './'
+    var PROJECT_FOLDERNAME = './';
 
 
     return {

@@ -1,11 +1,19 @@
-(function(http, express, instance){
+(function(http, https, fs, express, instance, FOLDERNAMES){
     
     var portP = +process.argv[2] || 80,
-        portC = +process.argv[3] || 9999;
-    
+        portS = +process.argv[3] || 443,
+        portC = +process.argv[4] || 9999;
+
     http.createServer(function(req, res){ 
         instance.process(req, res); 
     }).listen(portP);
+    
+    https.createServer({
+        key : fs.readFileSync(FOLDERNAMES.PROJECT + 'data/aproxy.key'),
+        cert: fs.readFileSync(FOLDERNAMES.PROJECT + 'data/aproxy.crt')
+    }, function(req, res){
+        instance.process(req, res);
+    }).listen(portS);
     
     var server = express();
     server.use('/', express.static(__dirname + '/web'));
@@ -18,4 +26,5 @@
     });
     server.listen(portC);
     
-}(require('http'), require('express'), require('./instance.js')));
+}(require('http'), require('https'), require('fs'), require('express'), 
+  require('./instance.js'), require('./consts/foldernames.js')));
