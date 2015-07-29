@@ -172,6 +172,16 @@ define(function(require, exports, module){
                 $ipaddress.val($ipaddress.val().replace(/^\s+/g, '').replace(/\s+$/g, ''));
                 
                 if(!validator.and([
+                    validator.is($hostname, cfg.tips.hostname.unique, function(){
+                        var unique = true;
+                        $item.siblings().not('.tip.empty').each(function(){
+                            var $hn = $(this).find('.hostname input[type=text]');
+                            if($hn.val() === $hostname.val()){
+                                unique = false;
+                            }
+                        });
+                        return unique;
+                    }),
                     validator.nonEmp($hostname, cfg.tips.hostname.nonEmp) && 
                     validator.maxLen($hostname, cfg.tips.hostname.maxLen, 128),
                     
@@ -243,7 +253,8 @@ define(function(require, exports, module){
             setFail   : '写入失败',
             removeFail: '删除失败',
             hostname  : {
-                nonEmp: '主机名不得为空',
+                unique: '主机域名不得重复',
+                nonEmp: '主机域名不得为空',
                 maxLen: '主机名不得超过128字'
             },
             ipaddress : {

@@ -1,7 +1,7 @@
 {
   "name": "aproxy",
-  "version": "3.1.0",
-  "description": "A proxy for static resources",
+  "version": "3.1.1",
+  "description": "A proxy for frontend development.",
   "keywords": [
     "proxy",
     "frontend",
