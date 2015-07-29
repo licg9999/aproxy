@@ -15,7 +15,7 @@
   "dependencies": {
     "colors": "~1.0.3",
     "express": "~4.10.1",
-    "flex-combo-plus": "^2.1.7",
+    "flex-combo-plus": "2.2.0",
     "merge": "~1.2.0",
     "promise": "~6.0.1"
   },
