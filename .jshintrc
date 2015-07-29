@@ -1,0 +1,11 @@
+{
+    "undef": true,
+    "node": true,
+    "browser": true,
+    "jquery": true,
+    "-W084": true,
+    "globals": {
+        "define": true,
+        "structure": true
+    }
+}

@@ -22,11 +22,11 @@
     
     chpr.fork(path.resolve(cwd, package.main), [pp, ps, pc], { cwd: cwd });
     
+    console.log('Starting proxy server...'.green);
     console.log(('Http  proxy port: ' + (pp || 80)).grey);
     console.log(('Https proxy port: ' + (ps || 443)).grey);
     console.log(('Configuration port: ' + (pc || 9999)).gray);
     console.log(('Certificate path: ' + cwd + '/data/aproxy.crt').gray);
-    console.log('Stop by ^C'.green);
     
 }(require('../package.json'), require('child_process'), require('path'), require('colors')));
 

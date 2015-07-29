@@ -167,17 +167,17 @@ define(function(require, exports, module){
             return function($item, $set){
                 var $hostname  = $item.find('.hostname input[type=text]'),
                     $ipaddress = $item.find('.ipaddress input[type=text]');
+
+                $hostname.val($hostname.val().replace(/^\s+/g, '').replace(/\s+$/g, ''));
+                $ipaddress.val($ipaddress.val().replace(/^\s+/g, '').replace(/\s+$/g, ''));
                 
                 if(!validator.and([
                     validator.nonEmp($hostname, cfg.tips.hostname.nonEmp) && 
                     validator.maxLen($hostname, cfg.tips.hostname.maxLen, 128),
                     
                     validator.nonEmp($ipaddress, cfg.tips.ipaddress.nonEmp) &&
-                    validator.maxLen($ipaddress, cfg.tips.ipaddress.maxLen, 15) &&
-                    validator.format($ipaddress, cfg.tips.ipaddress.format, /(\d{1,3}\.){3}\d{1,3}/) &&
-                    validator.is($ipaddress, cfg.tips.ipaddress.nlocal, function(val){
-                        return val !== '127.0.0.1';
-                    })
+                    validator.maxLen($ipaddress, cfg.tips.ipaddress.maxLen, 21) &&
+                    validator.format($ipaddress, cfg.tips.ipaddress.format, /^((\d{1,3}\.){3}\d{1,3})(\:\d{1,5})?$/)
                 ])){
                     return false;
                 }                
@@ -248,9 +248,8 @@ define(function(require, exports, module){
             },
             ipaddress : {
                 nonEmp: 'IP地址不得为空',
-                maxLen: 'IP地址不得超过15字',
-                format: 'IP地址格式错误',
-                nlocal: 'IP地址不得为127.0.0.1'
+                maxLen: 'IP地址不得超过21字',
+                format: 'IP地址格式错误'
             }
         },
         urls: {

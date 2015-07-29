@@ -1,4 +1,4 @@
-module.exports = (function(Promise, instance, FOLDERNAMES, ds){
+module.exports = (function(assert, colors, Promise, instance, port, FOLDERNAMES, ds){
 
     var current;
     
@@ -8,19 +8,24 @@ module.exports = (function(Promise, instance, FOLDERNAMES, ds){
 
                 var rules = data[0], remotes = data[1];
 
-                var k, v;
-                try{
-                    current = instance(rules, { request: { remote: remotes } });
-                    resolve();
-                }catch(e){
-                    for(k in remotes){
-                        v = remotes[k];
-                        if(v === '127.0.0.1'){
-                            delete remotes[k];
+                var k, v, r;
+                for(k in remotes){
+                    v = remotes[k].split(':');
+
+                    if(v[0] === '127.0.0.1'){
+                        if(!v[1]){
+                            v[1] = '80';
                         }
+                        r = port.isRegistered(v[1]);
+                        if(r){
+                            reject();
+                        }
+                        assert.equal(r, false, ('Proxy port conflicts with local reverse proxy setting(' + remotes[k] + ')!').red);
                     }
-                    ds.writeJSONFile('data/remotes.json', remotes).done(reject, reject);
                 }
+
+                current = instance(rules, { request: { remote: remotes } });
+                resolve();
             }, reject);
         });
     }
@@ -46,4 +51,4 @@ module.exports = (function(Promise, instance, FOLDERNAMES, ds){
         update: update
     };
 
-}(require('promise'), require('flex-combo-plus'), require('./consts/foldernames'), require('./ds')));
+}(require('assert'), require('colors'), require('promise'), require('flex-combo-plus'), require('./port.js'), require('./consts/foldernames'), require('./ds')));

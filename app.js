@@ -1,4 +1,4 @@
-(function(http, https, fs, express, instance, FOLDERNAMES){
+(function(http, https, fs, express, instance, port, FOLDERNAMES){
     
     var portP = +process.argv[2] || 80,
         portS = +process.argv[3] || 443,
@@ -7,14 +7,18 @@
     http.createServer(function(req, res){ 
         instance.process(req, res); 
     }).listen(portP);
+    port.register(portP);
     
+
     https.createServer({
         key : fs.readFileSync(FOLDERNAMES.PROJECT + 'data/aproxy.key'),
         cert: fs.readFileSync(FOLDERNAMES.PROJECT + 'data/aproxy.crt')
     }, function(req, res){
         instance.process(req, res);
     }).listen(portS);
+    port.register(portS);
     
+
     var server = express();
     server.use('/', express.static(__dirname + '/web'));
     server.use(function(req, res, nex){
@@ -25,6 +29,11 @@
         }
     });
     server.listen(portC);
+    port.register(portC);
+
+    instance.update().done(function(){
+        console.log('Started successfully. Stop by ^C'.green);
+    });
     
 }(require('http'), require('https'), require('fs'), require('express'), 
-  require('./instance.js'), require('./consts/foldernames.js')));
+  require('./instance.js'), require('./port.js'), require('./consts/foldernames.js')));

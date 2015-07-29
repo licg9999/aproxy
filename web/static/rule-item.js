@@ -176,7 +176,7 @@ define(function(require, exports, module){
                     $name = $item.find('.name'),
                     $from = $item.find('.from input[type=text]'),
                     $to   = $item.find('.to input[type=text]');
-                
+
                 if(!validator.and([
                     validator.nonEmp($from, cfg.tips.from.nonEmp) &&
                     validator.maxLen($from, cfg.tips.from.maxLen, 512),
