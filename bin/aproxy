@@ -15,6 +15,10 @@
             case '-c':
                 pc = +process.argv[idx + 1];
                 break;
+            case '-v':
+                console.log(('Aproxy current version: ' + package.version).cyan);
+                process.exit(0);
+                break;
         }
     });
     
