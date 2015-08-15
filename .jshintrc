@@ -6,6 +6,7 @@
     "-W084": true,
     "globals": {
         "define": true,
-        "structure": true
+        "structure": true,
+        "seajs": true
     }
 }
