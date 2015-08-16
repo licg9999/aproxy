@@ -11,8 +11,8 @@
     
 
     https.createServer({
-        key : fs.readFileSync(FOLDERNAMES.PROJECT + 'data/aproxy.key'),
-        cert: fs.readFileSync(FOLDERNAMES.PROJECT + 'data/aproxy.crt')
+        key : fs.readFileSync(FOLDERNAMES.PROJECT + 'ssl/aproxy.key'),
+        cert: fs.readFileSync(FOLDERNAMES.PROJECT + 'ssl/aproxy.crt')
     }, function(req, res){
         instance.process(req, res);
     }).listen(portS);

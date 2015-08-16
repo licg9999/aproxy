@@ -1,0 +1,46 @@
+[ req ]
+default_bits = 2048
+default_keyfile = ./ssl/aproxy.key
+distinguished_name = req_distinguished_name
+req_extensions = v3_req 
+
+[ req_distinguished_name ]
+commonName = Common Name
+commonName_default = Aproxy
+commonName_max = 64
+
+countryName = CN
+countryName_default = CN
+countryName_min = 2
+countryName_max = 2
+
+stateOrProvinceName = State Or Privince Name
+stateOrProvinceName_default = ZheJiang
+
+localityName = Locality Name
+localityName_default = HangZhou
+
+organizationName = Organization Name
+organizationName_default = CainiaoInc
+
+organizationalUnitName = Organizational Unit Name
+organizationalUnitName_default = UED
+
+emailAddress = Email Address
+emailAddress_default = chungen.lcg@alibaba-inc.com
+emailAddress_max = 64
+
+
+[ v3_req ]
+basicConstraints = CA:FALSE
+keyUsage = nonRepudiation, digitalSignature, keyEncipherment
+subjectAltName = @alt_names
+
+
+[alt_names]
+DNS.1 = g.alicdn.com
+DNS.2 = g-assets.daily.taobao.net
+DNS.3 = g.tbcdn.cn
+DNS.4 = g.assets.daily.taobao.net
+IP.1 = 127.0.0.1
+

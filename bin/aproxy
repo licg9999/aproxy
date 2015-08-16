@@ -30,7 +30,7 @@
     console.log(('Http  proxy port: ' + (pp || 80)).grey);
     console.log(('Https proxy port: ' + (ps || 443)).grey);
     console.log(('Configuration port: ' + (pc || 9999)).gray);
-    console.log(('Certificate path: ' + cwd + '/data/aproxy.crt').gray);
+    console.log(('Certificate path: ' + cwd + '/ssl/aproxy.crt').gray);
     
 }(require('../package.json'), require('child_process'), require('path'), require('colors')));
 
