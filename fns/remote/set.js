@@ -14,9 +14,9 @@ module.exports = (function(port, fs){
                 res.json({ success: false });
 
             }else {
-                fs.read().done(function(remotes){
+                fs.read().then(function(remotes){
                     remotes[hostname] = ipaddress;
-                    fs.write(remotes).done(function(){
+                    fs.write(remotes).then(function(){
                         res.json({ success: true });
                     }, function(){
                         res.json({ success: false });

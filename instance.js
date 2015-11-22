@@ -1,10 +1,10 @@
-module.exports = (function(assert, colors, Promise, instance, port, FOLDERNAMES, ds){
+module.exports = (function(assert, colors, instance, port, FOLDERNAMES, ds){
 
     var current;
     
     function update(){
         return new Promise(function(resolve, reject){
-            Promise.all([ds.readJSONFile('data/rules.json'), ds.readJSONFile('data/remotes.json')]).done(function(data){
+            Promise.all([ds.readJSONFile('data/rules.json'), ds.readJSONFile('data/remotes.json')]).then(function(data){
 
                 var rules = data[0], remotes = data[1];
 
@@ -38,7 +38,7 @@ module.exports = (function(assert, colors, Promise, instance, port, FOLDERNAMES,
                 current(req, res);
             }else {
                 if(queue.length === 0){
-                    update().done(function(){
+                    update().then(function(){
                         var args;
                         while(args = queue.shift()){
                             current(args[0], args[1]);
@@ -51,4 +51,4 @@ module.exports = (function(assert, colors, Promise, instance, port, FOLDERNAMES,
         update: update
     };
 
-}(require('assert'), require('colors'), require('promise'), require('flex-combo-plus'), require('./port.js'), require('./consts/foldernames'), require('./ds')));
+}(require('assert'), require('colors'), require('flex-combo-plus'), require('./port.js'), require('./consts/foldernames'), require('./ds')));

@@ -4,9 +4,9 @@ module.exports = (function(fs){
         if(!hostname){
             res.json({ success: false });
         }else{
-            fs.read().done(function(remotes){
+            fs.read().then(function(remotes){
                 if(delete remotes[hostname]){
-                    fs.write(remotes).done(function(){
+                    fs.write(remotes).then(function(){
                         res.json({ success: true });
                     }, function(){
                         res.json({ success: false });

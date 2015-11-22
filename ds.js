@@ -1,4 +1,4 @@
-module.exports = (function(fs, Promise, FOLDERNAMES){
+module.exports = (function(fs, FOLDERNAMES){
 
     var USER_FOLDERNAME    = FOLDERNAMES.USER,
         DATA_FOLDERNAME    = FOLDERNAMES.DATA,
@@ -114,7 +114,7 @@ module.exports = (function(fs, Promise, FOLDERNAMES){
 
             return new Promise(function(resolve, reject){
 
-                inner.tc(filename).done(function(fn){
+                inner.tc(filename).then(function(fn){
 
                     fs.readFile(fn, function(err, buf){
                         
@@ -134,7 +134,7 @@ module.exports = (function(fs, Promise, FOLDERNAMES){
             
             return new Promise(function(resolve, reject){
                 
-                inner.tc(filename).done(function(fn){
+                inner.tc(filename).then(function(fn){
 
                     fs.writeFile(fn, JSON.stringify(object), function(err){
                         
@@ -149,4 +149,4 @@ module.exports = (function(fs, Promise, FOLDERNAMES){
             });
         }
     };
-}(require('fs'), require('promise'), require('./consts/foldernames')));
+}(require('fs'), require('./consts/foldernames')));

@@ -1,4 +1,4 @@
-module.exports = (function(Promise, fs){
+module.exports = (function(fs){
     var FILENAME = 'data/rules.json';
     
     return {
@@ -9,4 +9,4 @@ module.exports = (function(Promise, fs){
             return fs.writeJSONFile(FILENAME, obj);
         }
     };
-}(require('promise'), require('../../fs.js')));
+}(require('../../fs.js')));

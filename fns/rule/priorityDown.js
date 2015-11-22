@@ -7,14 +7,14 @@ module.exports = (function(fs){
             res.json({ success: false });
         }else {
             
-            fs.read().done(function(rules){
+            fs.read().then(function(rules){
                 if(index >= rules.length - 1){
                     res.json({ success: false });
                 }else{
                     temp = rules[index];
                     rules[index] = rules[index + 1];
                     rules[index + 1] = temp;
-                    fs.write(rules).done(function(){
+                    fs.write(rules).then(function(){
                         res.json({ success: true });
                     }, function(){
                         res.json({ success: false });

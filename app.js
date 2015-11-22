@@ -31,7 +31,7 @@
     server.listen(portC);
     port.register(portC);
 
-    instance.update().done(function(){
+    instance.update().then(function(){
         console.log('Started successfully. Stop by ^C'.green);
     });
     

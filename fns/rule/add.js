@@ -12,11 +12,11 @@ module.exports = (function(fs){
             res.json({ success: false });
             
         }else{
-            fs.read().done(function(rules){
+            fs.read().then(function(rules){
                 
                 rules.unshift(rule);
                 
-                fs.write(rules).done(function(){
+                fs.write(rules).then(function(){
 
                     res.json({ success: true, index: 0 });
 

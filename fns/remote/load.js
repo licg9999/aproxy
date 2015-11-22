@@ -1,6 +1,6 @@
 module.exports = (function(fs){
     return function(req, res){
-        fs.read().done(function(remotes){
+        fs.read().then(function(remotes){
             res.json({
                 success: true,
                 remotes: remotes

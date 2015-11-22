@@ -10,7 +10,7 @@ module.exports = (function(fs) {
             });
         } else {
 
-            fs.read().done(function(rules) {
+            fs.read().then(function(rules) {
                 if (sindex > rules.length || tindex >= rules.length) {
                     res.json({
                         success: false
@@ -29,7 +29,7 @@ module.exports = (function(fs) {
                         }
                         rules[tindex] = temp;
                     }
-                    fs.write(rules).done(function() {
+                    fs.write(rules).then(function() {
                         res.json({
                             success: true
                         });

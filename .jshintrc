@@ -4,6 +4,7 @@
     "browser": true,
     "jquery": true,
     "-W084": true,
+    "esnext": true,
     "globals": {
         "define": true,
         "structure": true,
