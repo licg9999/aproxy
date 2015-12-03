@@ -4,6 +4,17 @@
         portS = +process.argv[3] || 443,
         portC = +process.argv[4] || 9999;
 
+    process.on('unhandledRejection', function(err){
+        console.log(err.toString().red);
+    });
+
+    process.on('uncaughtException', function(err){
+        console.log(err.toString().red);
+        if(err.code === 'EACCES'){
+            process.exit();
+        }
+    });
+
     http.createServer(function(req, res){ 
         instance.process(req, res); 
     }).listen(portP);
