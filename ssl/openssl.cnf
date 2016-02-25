@@ -38,10 +38,10 @@ subjectAltName = @alt_names
 
 
 [alt_names]
-DNS.1 = g.alicdn.com
+DNS.1 = g.assets.daily.taobao.net
 DNS.2 = g-assets.daily.taobao.net
 DNS.3 = g.tbcdn.cn
-DNS.4 = g.assets.daily.taobao.net
+DNS.4 = g.alicdn.com
 DNS.5 = assets.alicdn.com
 DNS.6 = assets.daily.taobao.net
 IP.1 = 127.0.0.1
